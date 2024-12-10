@@ -30,9 +30,9 @@ const Navbar: React.FC = () => {
 
                 {/* Navbar buttons for larger screens */}
                 <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                    <Button color="inherit" component={Link} to="/">Home</Button>
-                    <Button color="inherit" component={Link} to="/posts">Posts</Button>
-                    <Button color="inherit" component={Link} to="/profile">Profile</Button>
+                    <Button color="inherit" sx={{ mr: 2 }} component={Link} to="/">Posts</Button>
+                    <Button color="inherit" sx={{ mr: 2 }} component={Link} to="/create">Create</Button>
+                    <Button color="inherit" sx={{ mr: 2 }} component={Link} to="/profile">Profile</Button>
                     <Button color="inherit" component={Link} to="/login">Login</Button>
                 </Box>
             </Toolbar>
@@ -43,8 +43,8 @@ const Navbar: React.FC = () => {
                 open={drawerOpen}
                 onClose={() => toggleDrawer(false)}
             >
-                <Button component={Link} to="/" sx={{ p: 2 }}>Home</Button>
-                <Button component={Link} to="/posts" sx={{ p: 2 }}>Posts</Button>
+                <Button component={Link} to="/" sx={{ p: 2 }}>Posts</Button>
+                <Button component={Link} to="/create" sx={{ p: 2 }}>Create</Button>
                 <Button sx={{ p: 2 }}>Profile</Button>
                 <Button sx={{ p: 2 }}>Login</Button>
             </Drawer>

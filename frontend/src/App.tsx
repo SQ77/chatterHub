@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Container } from '@mui/material';
 import Navbar from './components/Navbar.tsx';
 import PostsPage from './components/PostsPage.tsx';
-import Home from './components/Home.tsx';
-import { Container } from '@mui/material';
+import CreatePost from './components/CreatePost.tsx';
 
 const App: React.FC = () => {
   return (
@@ -11,8 +11,8 @@ const App: React.FC = () => {
       <Navbar />
       <Container sx={{ marginTop: 3 }}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/posts" element={<PostsPage />} />
+          <Route path="/" element={<PostsPage />} />
+          <Route path="/create" element={<CreatePost />} />
         </Routes>
       </Container>
     </Router>

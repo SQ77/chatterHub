@@ -5,18 +5,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-
-        <p>
+        <p className="mt-10 font-bold">
           ChatterHub
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
     </div>
   );

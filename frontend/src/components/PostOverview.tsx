@@ -19,11 +19,11 @@ interface PostOverviewProps {
 }
 
 const categoryIcons = {
-    science: <ScienceIcon sx={{ marginRight: 1 }} />,
-    sports: <SportsSoccerIcon sx={{ marginRight: 1 }} />,
-    music: <MusicNoteIcon sx={{ marginRight: 1 }} />,
-    technology: <PhonelinkSetupIcon sx={{ marginRight: 1 }} />,
-    general: <CampaignIcon sx={{ marginRight: 1 }} />,
+    science: <ScienceIcon sx={{ mr: 1 }} />,
+    sports: <SportsSoccerIcon sx={{ mr: 1 }} />,
+    music: <MusicNoteIcon sx={{ mr: 1 }} />,
+    technology: <PhonelinkSetupIcon sx={{ mr: 1 }} />,
+    general: <CampaignIcon sx={{ mr: 1 }} />,
 };
 
 const PostOverview: React.FC<PostOverviewProps> = ({ currPost }) => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Input, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -38,7 +38,8 @@ const SearchBar: React.FC = () => {
         setSearchTerm(searchWord);
 
         if (searchWord) {
-            setFilteredPosts(dummyPosts.filter(item => item.title.toLowerCase().includes(searchTerm.toLowerCase())))
+            const filtered = dummyPosts.filter(item => item.title.toLowerCase().includes(searchTerm.toLowerCase()));
+            setFilteredPosts(filtered);
         } 
     };
 
@@ -74,11 +75,14 @@ const SearchBar: React.FC = () => {
                 }}
                 slotProps={{
                     input: {
-                        startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+                        startAdornment: 
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>,
                         endAdornment: 
-                        <InputAdornment position="end">
-                            {searchTerm && <ClearIcon className="cursor-pointer" onClick={() => setSearchTerm('')}/>}
-                        </InputAdornment>
+                            <InputAdornment position="end">
+                                {searchTerm && <ClearIcon className="cursor-pointer" onClick={() => setSearchTerm('')}/>}
+                            </InputAdornment>
                     },
                 }}
             />

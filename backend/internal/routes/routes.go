@@ -1,20 +1,16 @@
 package routes
 
 import (
-	"encoding/json"
-	"net/http"
-
-	"github.com/CVWO/sample-go-app/internal/handlers/users"
+	handlers "github.com/SQ77/chatterHub/internal/handlers/posts"
 	"github.com/go-chi/chi/v5"
 )
 
-func GetRoutes() func(r chi.Router) {
-	return func(r chi.Router) {
-		r.Get("/users", func(w http.ResponseWriter, req *http.Request) {
-			response, _ := users.HandleList(w, req)
+func NewRouter() *chi.Mux {
+	r := chi.NewRouter()
 
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(response)
-		})
-	}
+	// Define API routes
+	r.Post("/posts", handlers.CreatePostHandler)
+	r.Get("/posts", handlers.GetPostsHandler)
+
+	return r
 }

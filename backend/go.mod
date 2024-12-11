@@ -1,8 +1,9 @@
-module github.com/CVWO/sample-go-app
+module github.com/SQ77/chatterHub
 
 go 1.18
 
-require (
-	github.com/go-chi/chi/v5 v5.0.10
-	github.com/pkg/errors v0.9.1
-)
+require github.com/go-chi/chi/v5 v5.0.10
+
+require github.com/lib/pq v1.10.9
+
+require github.com/joho/godotenv v1.5.1

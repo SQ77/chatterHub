@@ -1,10 +1,7 @@
-# CVWO Assignment Sample Golang App
+# ChatterHub Backend
 
-This sample Golang app is provided to help you experiment and practice web development fundamentals.
-It shows how certain functionality can be implemented.
-However, do note that this is **far from a model example**.
-After all, we want to see how you maximise your learning in web development
-and good software development practices.
+## Acknowledgements
+This backend is based on the [sample go app](https://github.com/CVWO/sample-go-app) provided by CVWO.
 
 ## Getting Started
 
@@ -20,7 +17,7 @@ Download and install Go by following the instructions [here](https://go.dev/doc/
 
 
 ### Navigating the code
-This is the main file structure. Note that this is simply *one of* various paradigms to organise your code, and is just a bare starting point.
+This is the main file structure. 
 ```
 .
 ├── cmd

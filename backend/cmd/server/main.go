@@ -5,10 +5,16 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/CVWO/sample-go-app/internal/router"
+	"github.com/SQ77/chatterHub/internal/database"
+	"github.com/SQ77/chatterHub/internal/router"
 )
 
 func main() {
+	// Initialize the database connection
+	if err := database.InitDB(); err != nil {
+		log.Fatalf("Database initialization failed: %v", err)
+	}
+
 	r := router.Setup()
 	fmt.Print("Listening on port 8000 at http://localhost:8000!")
 

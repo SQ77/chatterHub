@@ -2,10 +2,11 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Drawer, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchBar from './SearchBar.tsx';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const location = useLocation();
 
     const toggleDrawer = (open: boolean) => {
         setDrawerOpen(open);
@@ -32,8 +33,26 @@ const Navbar: React.FC = () => {
 
                 {/* Navbar buttons for larger screens */}
                 <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                    <Button color="inherit" sx={{ mr: 2 }} component={Link} to="/">Posts</Button>
-                    <Button color="inherit" sx={{ mr: 2 }} component={Link} to="/create">Create</Button>
+                    <Button 
+                        color="inherit" 
+                        sx={{ 
+                            mr: 2, 
+                            backgroundColor: location.pathname === '/' ? 'black' : 'transparent',
+                        }} 
+                        component={Link} to="/"
+                    >
+                        Posts
+                    </Button>
+                    <Button 
+                        color="inherit" 
+                        sx={{ 
+                            mr: 2,
+                            backgroundColor: location.pathname === '/create' ? 'black' : 'transparent',
+                        }} 
+                        component={Link} to="/create"
+                    >
+                        Create
+                    </Button>
                     <Button color="inherit" sx={{ mr: 2 }} component={Link} to="/profile">Profile</Button>
                     <Button color="inherit" component={Link} to="/login">Login</Button>
                 </Box>

@@ -1,44 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Post } from './PostOverview.tsx';
+import { Post, getPosts } from '../api.ts';
 
 const SearchBar: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const [posts, setPosts] = useState<Post[]>([]);
     const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
 
-    const dummyPosts: Post[] = [
-        {
-            id: 1,
-            category: 'science',
-            title: 'First Post',
-            body: 'This is the body of the first post. It contains some interesting information about the topic.',
-            createdAt: '2024-12-01T12:00:00Z',
-        },
-        {
-            id: 2,
-            category: 'sports',
-            title: 'Second Post',
-            body: 'This is the body of the second post. Here, we discuss a different topic with more details.',
-            createdAt: '2024-12-05T14:30:00Z',
-        },
-        {
-            id: 3,
-            category: 'general',
-            title: 'Third Post',
-            body: 'In this post, we dive into a third topic, exploring new insights and ideas about the subject.',
-            createdAt: '2024-12-07T09:15:00Z',
-        },
-    ];
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const data = await getPosts();
+                setPosts(data);
+            } catch (err) {
+                console.error("Failed to fetch posts.");
+            }
+        };
+    
+        fetchPosts();
+    }, []);
+
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const searchWord = event.target.value;
         setSearchTerm(searchWord);
 
         if (searchWord) {
-            const filtered = dummyPosts.filter(item => item.title.toLowerCase().includes(searchTerm.toLowerCase()));
+            const filtered = posts?.filter(item => item.title.toLowerCase().includes(searchTerm.toLowerCase()));
             setFilteredPosts(filtered);
         } 
     };

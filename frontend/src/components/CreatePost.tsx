@@ -14,18 +14,49 @@ import { SelectChangeEvent } from '@mui/material/Select';
 
 const CreatePost: React.FC = () => {
     const [category, setCategory] = useState<string>('');  
-    const [error, setError] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>('');
+    const [body, setBody] = useState<string>('');
 
-    const handleChange = (event: SelectChangeEvent<string>) => {
+    const [categoryError, setCategoryError] = useState<boolean>(false);
+    const [titleError, setTitleError] = useState<boolean>(false);
+    const [bodyError, setBodyError] = useState<boolean>(false);
+
+    const MAX_TITLE_LENGTH = 100;
+    const MAX_BODY_LENGTH = 1000;
+
+    const handleCategoryChange = (event: SelectChangeEvent<string>) => {
         setCategory(event.target.value as string);
-        setError(false); 
+        setCategoryError(false); 
     };
 
     const handleSubmit = () => {
-        if (category === '') {
-            setError(true);
+        let hasError = false;
+
+        if (!category) {
+            setCategoryError(true);
+            hasError = true;
+        }
+
+        if (!title.trim()) {
+            setTitleError(true);
+            hasError = true;
         } else {
-            console.log('Post Category Selected:', category);
+            setTitleError(false);
+        }
+
+        if (!body.trim()) {
+            setBodyError(true);
+            hasError = true;
+        } else {
+            setBodyError(false);
+        }
+
+        // Successful submission
+        if (!hasError) {
+            console.log('Post Details:', { category, title, body });
+            setCategory('');
+            setTitle('');
+            setBody('');
         }
     };
 
@@ -35,29 +66,55 @@ const CreatePost: React.FC = () => {
                 Create Post
             </Typography>
 
-            <FormControl fullWidth error={error}>
+            <FormControl fullWidth error={categoryError}>
                 <InputLabel id="create-post-label">Category</InputLabel>
                 <Select
                     labelId="create-post-category"
                     id="create-post-select"
                     value={category}
                     label="Category"
-                    onChange={handleChange}
+                    onChange={handleCategoryChange}
                 >
-                    <MenuItem value="">Select Category...</MenuItem>
                     <MenuItem value="general">General</MenuItem>
                     <MenuItem value="technology">Technology</MenuItem>
                     <MenuItem value="music">Music</MenuItem>
                     <MenuItem value="science">Science</MenuItem>
                     <MenuItem value="sports">Sports</MenuItem>
                 </Select>
-                {error && <FormHelperText>Category is required</FormHelperText>}
+                {categoryError && <FormHelperText>Category is required</FormHelperText>}
 
-                <TextField 
-                    id="outlined-basic" 
-                    label="Title" 
-                    variant="outlined" 
+                <TextField
+                    id="create-post-title"
+                    label="Title"
+                    variant="outlined"
+                    required
+                    value={title}
+                    onChange={(e) => {
+                        if (e.target.value.length <= MAX_TITLE_LENGTH) {
+                            setTitle(e.target.value);
+                        }
+                    }}
+                    error={titleError}
+                    helperText={titleError ? 'Title is required' : `Max ${MAX_TITLE_LENGTH} characters`}
                     sx={{ mt: 4, mb: 4 }}
+                />
+
+                <TextField
+                    id="create-post-body"
+                    label="Body"
+                    variant="outlined"
+                    required
+                    multiline
+                    minRows={4}
+                    value={body}
+                    onChange={(e) => {
+                        if (e.target.value.length <= MAX_BODY_LENGTH) {
+                            setBody(e.target.value);
+                        }
+                    }}
+                    error={bodyError}
+                    helperText={bodyError ? 'Body is required' : `Max ${MAX_BODY_LENGTH} characters`}
+                    sx={{ mb: 4 }}
                 />
             </FormControl>
 

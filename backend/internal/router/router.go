@@ -3,11 +3,22 @@ package router
 import (
 	handlers "github.com/SQ77/chatterHub/internal/handlers/posts"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/cors"
 )
 
 func Setup() chi.Router {
 	r := chi.NewRouter()
 
+	// Enable CORS
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowCredentials: true,
+		MaxAge:           300,
+	}))
+
+	// Set up other routes
 	setUpRoutes(r)
 
 	return r

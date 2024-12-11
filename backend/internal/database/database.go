@@ -32,7 +32,7 @@ func InitDB() error {
 		host, port, user, password, dbname,
 	)
 
-	log.Printf("Connecting to DB with DSN: %s", dsn)
+	log.Printf("Connecting to DB with DSN")
 
 	// Open the database connection
 	db, err := sql.Open("postgres", dsn)

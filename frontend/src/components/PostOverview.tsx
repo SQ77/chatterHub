@@ -5,14 +5,7 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 import CampaignIcon from '@mui/icons-material/Campaign';
-
-export type Post = {
-    id: number;
-    category: string;
-    title: string;
-    body: string;
-    createdAt: string; 
-};
+import { Post } from '../api.ts';
 
 interface PostOverviewProps {
     currPost: Post; 
@@ -36,7 +29,7 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost }) => {
                     {currPost.category.charAt(0).toUpperCase() + currPost.category.slice(1)}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                    {new Date(currPost.createdAt).toLocaleDateString()}
+                    {new Date(currPost.created).toLocaleDateString()}
                 </Typography>
             </Box>
             <Typography variant="h6" sx={{ fontWeight: 'bold' }}>

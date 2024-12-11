@@ -1,43 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, CircularProgress, List } from '@mui/material';
-import PostOverview, { Post } from './PostOverview.tsx';
+import PostOverview from './PostOverview.tsx';
+import { getPosts, Post } from '../api.ts';
 
 const PostsPage: React.FC = () => {
-
-    const dummyPosts: Post[] = [
-        {
-            id: 1,
-            category: 'science',
-            title: 'First Post',
-            body: 'This is the body of the first post. It contains some interesting information about the topic.',
-            createdAt: '2024-12-01T12:00:00Z',
-        },
-        {
-            id: 2,
-            category: 'sports',
-            title: 'Second Post',
-            body: 'This is the body of the second post. Here, we discuss a different topic with more details.',
-            createdAt: '2024-12-05T14:30:00Z',
-        },
-        {
-            id: 3,
-            category: 'general',
-            title: 'Third Post',
-            body: 'In this post, we dive into a third topic, exploring new insights and ideas about the subject.',
-            createdAt: '2024-12-07T09:15:00Z',
-        },
-    ];
-
-    const [posts, setPosts] = useState<Post[]>(dummyPosts);
+    const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Simulate loading state for 1 second
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
+        const fetchPosts = async () => {
+            try {
+                const data = await getPosts();
+                setPosts(data);
+            } catch (err) {
+                setError("Failed to fetch posts.");
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchPosts();
     }, []);
 
     if (loading) {

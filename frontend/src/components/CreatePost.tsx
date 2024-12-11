@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
+import { createPost, Post } from '../api.ts';
 
 const CreatePost: React.FC = () => {
     const [category, setCategory] = useState<string>('');  
@@ -29,7 +30,7 @@ const CreatePost: React.FC = () => {
         setCategoryError(false); 
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         let hasError = false;
 
         if (!category) {
@@ -50,13 +51,24 @@ const CreatePost: React.FC = () => {
         } else {
             setBodyError(false);
         }
-
+        
         // Successful submission
         if (!hasError) {
-            console.log('Post Details:', { category, title, body });
-            setCategory('');
-            setTitle('');
-            setBody('');
+            const postData: Post = {
+                category,
+                title,
+                body,
+                created: new Date().toISOString(),
+            };
+            try {
+                const response = await createPost(postData);
+                console.log('Post created successfully:', response);
+                setCategory('');
+                setTitle('');
+                setBody('');
+            } catch (error) {
+                console.error('Error creating post:', error);
+            }
         }
     };
 

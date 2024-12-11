@@ -7,18 +7,21 @@ const PostsPage: React.FC = () => {
     const dummyPosts: Post[] = [
         {
             id: 1,
+            category: 'science',
             title: 'First Post',
             body: 'This is the body of the first post. It contains some interesting information about the topic.',
             createdAt: '2024-12-01T12:00:00Z',
         },
         {
             id: 2,
+            category: 'sports',
             title: 'Second Post',
             body: 'This is the body of the second post. Here, we discuss a different topic with more details.',
             createdAt: '2024-12-05T14:30:00Z',
         },
         {
             id: 3,
+            category: 'general',
             title: 'Third Post',
             body: 'In this post, we dive into a third topic, exploring new insights and ideas about the subject.',
             createdAt: '2024-12-07T09:15:00Z',

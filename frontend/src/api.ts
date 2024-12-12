@@ -24,11 +24,11 @@ export const getPosts = async (): Promise<Post[]> => {
 export const createPost = async (post: Post): Promise<Post> => {
     try {
         const response = await fetch(`${API_BASE_URL}/posts`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(post),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(post),
         });
         if (!response.ok) throw new Error(`Error: ${response.statusText}`);
         return await response.json();

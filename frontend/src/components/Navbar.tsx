@@ -53,8 +53,16 @@ const Navbar: React.FC = () => {
                     >
                         Create
                     </Button>
-                    <Button color="inherit" sx={{ mr: 2 }} component={Link} to="/profile">Profile</Button>
-                    <Button color="inherit" component={Link} to="/login">Login</Button>
+                    <Button color="inherit" sx={{ mr: 2 }}component={Link} to="/profile">Profile</Button>
+                    <Button 
+                        color="inherit" 
+                        sx={{ 
+                            backgroundColor: location.pathname === '/login' ? 'black' : 'transparent', 
+                        }} 
+                        component={Link} to="/login"
+                    >
+                        Login
+                    </Button>
                 </Box>
             </Toolbar>
 
@@ -66,8 +74,8 @@ const Navbar: React.FC = () => {
             >
                 <Button component={Link} to="/" sx={{ p: 2 }}>Posts</Button>
                 <Button component={Link} to="/create" sx={{ p: 2 }}>Create</Button>
-                <Button sx={{ p: 2 }}>Profile</Button>
-                <Button sx={{ p: 2 }}>Login</Button>
+                <Button sx={{ p: 2 }} component={Link} to="/profile">Profile</Button>
+                <Button sx={{ p: 2 }} component={Link} to="/login">Login</Button>
             </Drawer>
         </AppBar>
     );

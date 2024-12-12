@@ -1,16 +1,19 @@
 package routes
 
 import (
-	handlers "github.com/SQ77/chatterHub/internal/handlers/posts"
+	handlers "github.com/SQ77/chatterHub/internal/handlers"
+
 	"github.com/go-chi/chi/v5"
 )
 
 func NewRouter() *chi.Mux {
 	r := chi.NewRouter()
 
-	// Define API routes
 	r.Post("/posts", handlers.CreatePostHandler)
 	r.Get("/posts", handlers.GetPostsHandler)
+	r.Post("/users", handlers.CreateUserHandler)
+	r.Get("/users", handlers.GetUsersHandler)
+	r.Post("/authenticate", handlers.AuthenticateUserHandler)
 
 	return r
 }

@@ -1,7 +1,8 @@
 package router
 
 import (
-	handlers "github.com/SQ77/chatterHub/internal/handlers/posts"
+	handlers "github.com/SQ77/chatterHub/internal/handlers"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 )
@@ -18,21 +19,18 @@ func Setup() chi.Router {
 		MaxAge:           300,
 	}))
 
-	// Set up other routes
 	setUpRoutes(r)
 
 	return r
 }
 
-// setUpRoutes defines the application's API routes.
 func setUpRoutes(r chi.Router) {
-	// Grouping routes related to posts
 	r.Route("/api/posts", func(r chi.Router) {
-		r.Get("/", handlers.GetPostsHandler)    // List all posts
-		r.Post("/", handlers.CreatePostHandler) // Create a new post
+		r.Get("/", handlers.GetPostsHandler)
+		r.Post("/", handlers.CreatePostHandler)
 	})
 
-	// Additional routes can be added here as needed, for example:
-	// r.Get("/api/users", handlers.GetUsersHandler)
-	// r.Post("/api/users", handlers.CreateUserHandler)
+	r.Post("/api/users", handlers.CreateUserHandler)
+	r.Get("/api/users", handlers.GetUsersHandler)
+	r.Post("/api/authenticate", handlers.AuthenticateUserHandler)
 }

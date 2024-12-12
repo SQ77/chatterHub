@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Drawer, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchBar from './SearchBar.tsx';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
-    const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const location = useLocation();
 
     const toggleDrawer = (open: boolean) => {
@@ -72,10 +72,10 @@ const Navbar: React.FC = () => {
                 open={drawerOpen}
                 onClose={() => toggleDrawer(false)}
             >
-                <Button component={Link} to="/" sx={{ p: 2 }}>Posts</Button>
-                <Button component={Link} to="/create" sx={{ p: 2 }}>Create</Button>
-                <Button sx={{ p: 2 }} component={Link} to="/profile">Profile</Button>
-                <Button sx={{ p: 2 }} component={Link} to="/login">Login</Button>
+                <Button onClick={() => toggleDrawer(false)} component={Link} to="/" sx={{ p: 2 }}>Posts</Button>
+                <Button onClick={() => toggleDrawer(false)} component={Link} to="/create" sx={{ p: 2 }}>Create</Button>
+                <Button onClick={() => toggleDrawer(false)} component={Link} to="/profile" sx={{ p: 2 }}>Profile</Button>
+                <Button onClick={() => toggleDrawer(false)} component={Link} to="/login" sx={{ p: 2 }}>Login</Button>
             </Drawer>
         </AppBar>
     );

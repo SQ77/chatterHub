@@ -2,15 +2,26 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Drawer, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchBar from './SearchBar.tsx';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext.tsx';
 
 const Navbar: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
+
     const location = useLocation();
+    const navigate = useNavigate();
+    const { isAuthenticated, user, logout } = useAuth();
 
     const toggleDrawer = (open: boolean) => {
         setDrawerOpen(open);
     };
+
+    const handleLogout = () => {
+        const confirm = window.confirm("Logout?");
+        if (!confirm) return;
+        logout();
+        navigate("/");
+    }
 
     return (
         <AppBar position="static">
@@ -43,7 +54,7 @@ const Navbar: React.FC = () => {
                     >
                         Posts
                     </Button>
-                    <Button 
+                    {isAuthenticated && <Button 
                         color="inherit" 
                         sx={{ 
                             mr: 2,
@@ -52,8 +63,8 @@ const Navbar: React.FC = () => {
                         component={Link} to="/create"
                     >
                         Create
-                    </Button>
-                    <Button 
+                    </Button>}
+                    {isAuthenticated && <Button 
                         color="inherit" 
                         sx={{ 
                             mr : 2,
@@ -62,8 +73,18 @@ const Navbar: React.FC = () => {
                         component={Link} to="/profile" 
                     >
                         Profile
-                    </Button>
-                    <Button 
+                    </Button>}
+                    {isAuthenticated && <Button 
+                        color="inherit" 
+                        sx={{ 
+                            mr : 2,
+                            backgroundColor: '#D91C16', 
+                        }} 
+                        onClick={handleLogout} 
+                    >
+                        Logout
+                    </Button>}
+                    {!isAuthenticated && <Button 
                         color="inherit" 
                         sx={{ 
                             backgroundColor: location.pathname === '/login' ? 'black' : 'transparent', 
@@ -71,7 +92,7 @@ const Navbar: React.FC = () => {
                         component={Link} to="/login"
                     >
                         Login
-                    </Button>
+                    </Button>}
                 </Box>
             </Toolbar>
 
@@ -80,11 +101,51 @@ const Navbar: React.FC = () => {
                 anchor="left"
                 open={drawerOpen}
                 onClose={() => toggleDrawer(false)}
+                sx={{
+                    '& .MuiButton-root': { color: 'black' }, 
+                }}
             >
-                <Button onClick={() => toggleDrawer(false)} component={Link} to="/" sx={{ p: 2 }}>Posts</Button>
-                <Button onClick={() => toggleDrawer(false)} component={Link} to="/create" sx={{ p: 2 }}>Create</Button>
-                <Button onClick={() => toggleDrawer(false)} component={Link} to="/profile" sx={{ p: 2 }}>Profile</Button>
-                <Button onClick={() => toggleDrawer(false)} component={Link} to="/login" sx={{ p: 2 }}>Login</Button>
+                <Button 
+                    onClick={() => toggleDrawer(false)} 
+                    component={Link} to="/" 
+                    sx={{ p: 2 }}
+                >
+                    Posts
+                </Button>
+                {isAuthenticated && <Button 
+                    onClick={() => toggleDrawer(false)} 
+                    component={Link} to="/create" 
+                    sx={{ p: 2 }}
+                >
+                    Create
+                </Button>}
+                {isAuthenticated && <Button 
+                    onClick={() => toggleDrawer(false)} 
+                    component={Link} to="/profile" 
+                    sx={{ p: 2 }}
+                >
+                    Profile
+                </Button>}
+                {isAuthenticated && <Button 
+                    sx={{ 
+                        p: 1,
+                        m: 2,
+                        backgroundColor: '#D91C16', 
+                    }} 
+                    onClick={() => {
+                        handleLogout();
+                        toggleDrawer(false);
+                    }} 
+                >
+                    Logout
+                </Button>}
+                {!isAuthenticated && <Button 
+                    onClick={() => toggleDrawer(false)} 
+                    component={Link} to="/login" 
+                    sx={{ p: 2 }}
+                >
+                    Login
+                </Button>}
             </Drawer>
         </AppBar>
     );

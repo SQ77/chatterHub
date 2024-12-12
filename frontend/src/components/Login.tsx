@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { authenticateUser } from '../api.ts';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext.tsx';
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [error, setError] = useState<string>('');
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const { isAuthenticated, login } = useAuth();
 
+    const navigate = useNavigate();
     const MAX_USERNAME_LENGTH = 50;
 
     const handleLogin = async () => {
         try {
             await authenticateUser(username.trim());
-            setIsAuthenticated(true);
             setError(''); 
+            login({ username: username.trim() });
+            navigate("/profile");
         } catch (err) {
-            setIsAuthenticated(false);
             setError('Invalid username. Please try again.');
         }
     };

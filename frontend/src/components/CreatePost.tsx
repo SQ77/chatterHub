@@ -7,7 +7,9 @@ import {
     InputLabel, 
     Select, 
     MenuItem,
-    TextField
+    TextField,
+    Alert,
+    Snackbar
 } from '@mui/material';
 import React, { useState } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -21,6 +23,9 @@ const CreatePost: React.FC = () => {
     const [categoryError, setCategoryError] = useState<boolean>(false);
     const [titleError, setTitleError] = useState<boolean>(false);
     const [bodyError, setBodyError] = useState<boolean>(false);
+
+    const [successAlertOpen, setSuccessAlertOpen] = useState<boolean>(false);
+    const [failureAlertOpen, setFailureAlertOpen] = useState<boolean>(false);
 
     const MAX_TITLE_LENGTH = 100;
     const MAX_BODY_LENGTH = 1000;
@@ -61,13 +66,13 @@ const CreatePost: React.FC = () => {
                 created: new Date().toISOString(),
             };
             try {
-                const response = await createPost(postData);
-                console.log('Post created successfully:', response);
+                await createPost(postData);
+                setSuccessAlertOpen(true);
                 setCategory('');
                 setTitle('');
                 setBody('');
             } catch (error) {
-                console.error('Error creating post:', error);
+                setFailureAlertOpen(true);
             }
         }
     };
@@ -135,6 +140,39 @@ const CreatePost: React.FC = () => {
                     Post
                 </Button>
             </Box>
+
+            <Snackbar 
+                open={successAlertOpen} 
+                autoHideDuration={5000}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                onClose={() => setSuccessAlertOpen(false)}
+            >
+                <Alert
+                    onClose={() => setSuccessAlertOpen(false)}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    Post created successfully!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar 
+                open={failureAlertOpen} 
+                autoHideDuration={5000} 
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                onClose={() => setFailureAlertOpen(false)}
+            >
+                <Alert
+                    onClose={() => setFailureAlertOpen(false)}
+                    severity="error"
+                    variant="filled"
+                    
+                    sx={{ width: '100%' }}
+                >
+                    Error creating post!
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }

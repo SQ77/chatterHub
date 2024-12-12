@@ -53,7 +53,16 @@ const Navbar: React.FC = () => {
                     >
                         Create
                     </Button>
-                    <Button color="inherit" sx={{ mr: 2 }}component={Link} to="/profile">Profile</Button>
+                    <Button 
+                        color="inherit" 
+                        sx={{ 
+                            mr : 2,
+                            backgroundColor: location.pathname === '/profile' ? 'black' : 'transparent', 
+                        }} 
+                        component={Link} to="/profile" 
+                    >
+                        Profile
+                    </Button>
                     <Button 
                         color="inherit" 
                         sx={{ 

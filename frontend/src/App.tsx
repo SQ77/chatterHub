@@ -6,6 +6,7 @@ import PostsPage from './components/PostsPage.tsx';
 import CreatePost from './components/CreatePost.tsx';
 import Login from './components/Login.tsx';
 import SignUp from './components/SignUp.tsx';
+import Profile from './components/Profile.tsx';
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
           <Route path="/create" element={<CreatePost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Container>
     </Router>

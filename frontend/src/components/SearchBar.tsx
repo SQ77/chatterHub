@@ -4,11 +4,13 @@ import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Post, getPosts } from '../api.ts';
+import PostDetails from './PostDetails.tsx';
 
 const SearchBar: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [posts, setPosts] = useState<Post[]>([]);
     const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+    const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -34,8 +36,9 @@ const SearchBar: React.FC = () => {
         } 
     };
 
-    const handleMenuItemClick = () => {
+    const handleMenuItemClick = (postItem: Post) => {
         setSearchTerm('');
+        setSelectedPost(postItem);
     };
 
     return (
@@ -83,7 +86,7 @@ const SearchBar: React.FC = () => {
                     {filteredPosts.map((item) => (
                         <div
                             key={item.id}
-                            onClick={handleMenuItemClick}
+                            onClick={() => handleMenuItemClick(item)}
                             className="px-3 py-2 cursor-pointer border-b border-gray-300 hover:bg-gray-100"
                         >
                             {item.title}
@@ -91,6 +94,7 @@ const SearchBar: React.FC = () => {
                     ))}
                 </div>
             )}
+            <PostDetails isOpen={!!selectedPost} onClose={() => setSelectedPost(null)} post={selectedPost}/>
         </Box>
     );
 };

@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import { Post } from '../api.ts';
 
 interface PostDetailsProps {
     isOpen: boolean;
     onClose: () => void;
-    post: Post;
+    post: Post | null;
 }
 
 const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {

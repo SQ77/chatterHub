@@ -112,7 +112,7 @@ const CreatePost: React.FC = () => {
                         }
                     }}
                     error={titleError}
-                    helperText={titleError ? 'Title is required' : `Max ${MAX_TITLE_LENGTH} characters`}
+                    helperText={titleError ? 'Title is required' : `${title.length} / ${MAX_TITLE_LENGTH} characters`}
                     sx={{ mt: 4, mb: 4 }}
                 />
 
@@ -130,7 +130,7 @@ const CreatePost: React.FC = () => {
                         }
                     }}
                     error={bodyError}
-                    helperText={bodyError ? 'Body is required' : `Max ${MAX_BODY_LENGTH} characters`}
+                    helperText={bodyError ? 'Body is required' : `${body.length} / ${MAX_BODY_LENGTH} characters`}
                     sx={{ mb: 4 }}
                 />
             </FormControl>

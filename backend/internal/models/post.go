@@ -8,4 +8,6 @@ type Post struct {
 	Body     string    `json:"body"`
 	Category string    `json:"category"`
 	Created  time.Time `json:"created"`
+	Author   string    `json:"author"`
+	Upvotes  int       `json:"upvotes"`
 }

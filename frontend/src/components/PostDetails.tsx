@@ -30,7 +30,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
             aria-labelledby="post-details"
             aria-describedby="post-details-body"
         >
-            <DialogTitle id="post-details">{post.title}</DialogTitle>
+            <DialogTitle id="post-details">{post.author}<br/>{post.title}</DialogTitle>
             <DialogContent dividers={true}>
                 <DialogContentText
                     id="post-details-body"

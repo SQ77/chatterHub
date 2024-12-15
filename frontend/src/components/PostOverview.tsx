@@ -7,6 +7,7 @@ import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import { Post } from '../api.ts';
 import PostDetails from './PostDetails.tsx';
+import VoteButton from './VoteButton.tsx';
 
 interface PostOverviewProps {
     currPost: Post; 
@@ -59,6 +60,7 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost }) => {
                     <Typography variant="body1" color="textPrimary">
                         {currPost.body.substring(0, 100)}...
                     </Typography>
+                    <VoteButton initialVotes={currPost.upvotes}/>
                 </CardContent>
             </Card>
             <PostDetails isOpen={isDetailedViewOpen} onClose={handleCloseDetails} post={currPost}/>

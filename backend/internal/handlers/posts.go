@@ -16,7 +16,7 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createdPost, err := dataacess.CreatePost(post.Title, post.Body, post.Category)
+	createdPost, err := dataacess.CreatePost(post.Title, post.Body, post.Category, post.Author)
 	if err != nil {
 		http.Error(w, "Failed to create post", http.StatusInternalServerError)
 		return

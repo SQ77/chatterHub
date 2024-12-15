@@ -6,6 +6,8 @@ export interface Post {
     body: string;
     category: string;
     created: string;
+    author: string;
+    upvotes: number;
 }
 
 export interface User {

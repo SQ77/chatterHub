@@ -14,6 +14,7 @@ import {
 import React, { useState } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { createPost, Post } from '../api.ts';
+import { useAuth } from './AuthContext.tsx';
 
 const CreatePost: React.FC = () => {
     const [category, setCategory] = useState<string>('');  
@@ -29,6 +30,8 @@ const CreatePost: React.FC = () => {
 
     const MAX_TITLE_LENGTH = 100;
     const MAX_BODY_LENGTH = 1000;
+
+    const { user } = useAuth();
 
     const handleCategoryChange = (event: SelectChangeEvent<string>) => {
         setCategory(event.target.value as string);
@@ -64,6 +67,8 @@ const CreatePost: React.FC = () => {
                 title,
                 body,
                 created: new Date().toISOString(),
+                author: user!.username,
+                upvotes: 0,
             };
             try {
                 await createPost(postData);

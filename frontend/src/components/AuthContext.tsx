@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../api.ts';
 
 interface AuthContextType {
@@ -26,14 +26,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [user, setUser] = useState<User | null>(null);
 
+    // Restore user state on initial load
+    useEffect(() => {
+        const storedUser = sessionStorage.getItem('user');
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
+            setIsAuthenticated(true);
+        }
+    }, []);
+
     const login = (user: User) => {
         setIsAuthenticated(true);
         setUser(user);
+        sessionStorage.setItem('user', JSON.stringify(user));
     };
 
     const logout = () => {
         setIsAuthenticated(false);
         setUser(null);
+        sessionStorage.removeItem('user');
     };
 
     return (

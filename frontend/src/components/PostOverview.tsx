@@ -7,7 +7,7 @@ import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Post } from '../api.ts';
+import { Post, deletePost } from '../api.ts';
 import PostDetails from './PostDetails.tsx';
 import VoteButton from './VoteButton.tsx';
 
@@ -29,6 +29,23 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost, manageMode }) => 
 
     const handleCloseDetails = () => {
         setIsDetailedViewOpen(false);
+    };
+
+    const handleDeletePost = async (postId: number | undefined) => {
+        const confirm = window.confirm("Delete post?");
+        if (!confirm) return;
+
+        if (!postId) {
+            console.error("Invalid post ID");
+            return;
+        }
+
+        try {
+            await deletePost(postId); 
+            console.log(`Post with ID ${postId} has been deleted.`);
+        } catch (error) {
+            console.error("Failed to delete post:", error);
+        }
     };
 
     return (
@@ -80,8 +97,24 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost, manageMode }) => 
                                 gap: 2,
                             }}
                         >
-                            <EditIcon />
-                            <DeleteIcon />
+                            <EditIcon 
+                                sx={{
+                                    "&:hover": {
+                                        color: "blue", 
+                                    },
+                                }}
+                            />
+                            <DeleteIcon 
+                                onClick={(event) => {
+                                    event.stopPropagation(); 
+                                    handleDeletePost(currPost.id);
+                                }}
+                                sx={{
+                                    "&:hover": {
+                                        color: "#D91C16", 
+                                    },
+                                }}
+                            />
                         </Box>
                     }
                 </CardContent>

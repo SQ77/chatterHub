@@ -3,6 +3,7 @@ import { IconButton, Typography, Box } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { updatePostUpvotes } from "../api.ts";
+import { useAuth } from "./AuthContext.tsx";
 
 interface VoteButtonProps {
   initialVotes?: number;
@@ -13,6 +14,8 @@ const VoteButton: React.FC<VoteButtonProps> = ({ initialVotes = 0, postId }) => 
     const [votes, setVotes] = useState(initialVotes);
     const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
     const [isDownvoted, setIsDownvoted] = useState<boolean>(false);
+
+    const { isAuthenticated } = useAuth();
 
     const handleUpvote = async () => {
         try {
@@ -55,20 +58,20 @@ const VoteButton: React.FC<VoteButtonProps> = ({ initialVotes = 0, postId }) => 
             display="flex" 
             flexDirection="row" 
             alignItems="center"
+            justifyContent="center"
             onClick={stopPropagation}
             sx={{
                 border: "1px solid #ccc",
                 backgroundColor: "#f5f5f5",
                 borderRadius: "20px",
                 mt: 2,
-                p: 1,
                 width: "100px",
             }}
         >
             <IconButton
                 onClick={handleUpvote}
                 color={isUpvoted ? "primary" : "default"}
-                disabled={isDownvoted}
+                disabled={isDownvoted || !isAuthenticated}
             >
                 <ArrowUpwardIcon fontSize="small"/>
             </IconButton>
@@ -78,7 +81,7 @@ const VoteButton: React.FC<VoteButtonProps> = ({ initialVotes = 0, postId }) => 
             <IconButton
                 onClick={handleDownvote}
                 color={isDownvoted ? "primary" : "default"}
-                disabled={isUpvoted}
+                disabled={isUpvoted || !isAuthenticated}
             >
                 <ArrowDownwardIcon fontSize="small"/>
             </IconButton>

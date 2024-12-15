@@ -10,19 +10,21 @@ const Profile: React.FC = () => {
     const { user } = useAuth();
 
     useEffect(() => {
-            const fetchPosts = async () => {
-                try {
-                    const data = await getPosts();
-                    setMyPosts(data.filter(post => post.author === user?.username));
-                } catch (err) {
-                    console.error("Failed to fetch posts.");
-                } finally {
-                    setLoading(false);
-                }
-            };
-        
-            fetchPosts();
-    }, []);
+        if (!user) return;
+
+        const fetchPosts = async () => {
+            try {
+                const data = await getPosts();
+                setMyPosts(data.filter(post => post.author === user.username));
+            } catch (err) {
+                console.error("Failed to fetch posts.");
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchPosts();
+    }, [user]);
 
     if (loading) {
         return (

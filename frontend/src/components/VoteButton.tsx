@@ -2,32 +2,48 @@ import React, { useState } from "react";
 import { IconButton, Typography, Box } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { updatePostUpvotes } from "../api.ts";
 
 interface VoteButtonProps {
   initialVotes?: number;
+  postId: number;
 }
 
-const VoteButton: React.FC<VoteButtonProps> = ({ initialVotes = 0 }) => {
+const VoteButton: React.FC<VoteButtonProps> = ({ initialVotes = 0, postId }) => {
     const [votes, setVotes] = useState(initialVotes);
     const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
     const [isDownvoted, setIsDownvoted] = useState<boolean>(false);
 
-    const handleUpvote = () => {
-        if (isUpvoted) {
-            setVotes((prev) => prev - 1);
-        } else {
-            setVotes((prev) => prev + 1);
+    const handleUpvote = async () => {
+        try {
+            if (isUpvoted) {
+                setVotes((prev) => prev - 1);
+                await updatePostUpvotes(postId, false); 
+            } else {
+                setVotes((prev) => prev + 1);
+                await updatePostUpvotes(postId, true); 
+                if (isDownvoted) setIsDownvoted(false); 
+            }
+            setIsUpvoted(!isUpvoted);
+        } catch (error) {
+            console.error("Failed to update upvotes:", error);
         }
-        setIsUpvoted(!isUpvoted);
     };
 
-    const handleDownvote = () => {
-        if (isDownvoted) {
-            setVotes((prev) => prev + 1);
-        } else {
-            setVotes((prev) => prev - 1);
+    const handleDownvote = async () => {
+        try {
+            if (isDownvoted) {
+                setVotes((prev) => prev + 1);
+                await updatePostUpvotes(postId, true); 
+            } else {
+                setVotes((prev) => prev - 1);
+                await updatePostUpvotes(postId, false); 
+                if (isUpvoted) setIsUpvoted(false);
+            }
+            setIsDownvoted(!isDownvoted);
+        } catch (error) {
+            console.error("Failed to update downvotes:", error);
         }
-        setIsDownvoted(!isDownvoted);
     };
 
     const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {

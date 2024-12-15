@@ -45,6 +45,31 @@ export const createPost = async (post: Post): Promise<Post> => {
     }
 };
 
+// Update upvotes on a post
+export const updatePostUpvotes = async (postId: number, increment: boolean): Promise<void> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/upvotes`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                post_id: postId,
+                increment: increment,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+    } catch (error) {
+        console.error("Error updating upvotes:", error);
+        throw error;
+    }
+};
+
+
 // Fetch all users
 export const getUsers = async (): Promise<User[]> => {
     try {

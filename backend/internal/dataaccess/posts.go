@@ -1,6 +1,8 @@
-package dataacess
+package dataaccess
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -48,4 +50,18 @@ func GetPosts() ([]models.Post, error) {
 	}
 
 	return posts, nil
+}
+
+func UpdatePostUpvotes(ctx context.Context, postID int, increment bool) error {
+	query := `UPDATE posts SET upvotes = upvotes + $1 WHERE id = $2`
+	delta := 1
+	if !increment {
+		delta = -1
+	}
+
+	_, err := database.DB.ExecContext(ctx, query, delta, postID)
+	if err != nil {
+		return fmt.Errorf("failed to update upvotes for post %d: %w", postID, err)
+	}
+	return nil
 }

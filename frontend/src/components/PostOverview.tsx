@@ -60,7 +60,7 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost }) => {
                     <Typography variant="body1" color="textPrimary">
                         {currPost.body.substring(0, 100)}...
                     </Typography>
-                    <VoteButton initialVotes={currPost.upvotes}/>
+                    <VoteButton initialVotes={currPost.upvotes} postId={currPost.id!}/>
                 </CardContent>
             </Card>
             <PostDetails isOpen={isDetailedViewOpen} onClose={handleCloseDetails} post={currPost}/>

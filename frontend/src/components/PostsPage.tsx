@@ -6,7 +6,7 @@ import { getPosts, Post } from '../api.ts';
 const PostsPage: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -84,7 +84,7 @@ const PostsPage: React.FC = () => {
             <List>
                 {filteredPosts?.length > 0 
                     ? filteredPosts?.map((post) => (
-                        <PostOverview key={post.id} currPost={post}/>
+                        <PostOverview key={post.id} currPost={post} manageMode={false}/>
                     )) 
                     : <Typography>No posts found</Typography>
                 }

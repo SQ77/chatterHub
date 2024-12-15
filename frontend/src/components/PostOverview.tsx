@@ -5,12 +5,15 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 import CampaignIcon from '@mui/icons-material/Campaign';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Post } from '../api.ts';
 import PostDetails from './PostDetails.tsx';
 import VoteButton from './VoteButton.tsx';
 
 interface PostOverviewProps {
     currPost: Post; 
+    manageMode: boolean;
 }
 
 const categoryIcons = {
@@ -21,7 +24,7 @@ const categoryIcons = {
     general: <CampaignIcon sx={{ mr: 1 }} />,
 };
 
-const PostOverview: React.FC<PostOverviewProps> = ({ currPost }) => {
+const PostOverview: React.FC<PostOverviewProps> = ({ currPost, manageMode }) => {
     const [isDetailedViewOpen, setIsDetailedViewOpen] = useState<boolean>(false);
 
     const handleCloseDetails = () => {
@@ -60,7 +63,27 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost }) => {
                     <Typography variant="body1" color="textPrimary">
                         {currPost.body.substring(0, 100)}...
                     </Typography>
-                    <VoteButton initialVotes={currPost.upvotes} postId={currPost.id!}/>
+                    {!manageMode && <VoteButton initialVotes={currPost.upvotes} postId={currPost.id!}/>}
+                    {manageMode && 
+                        <Box 
+                            display="flex" 
+                            flexDirection="row" 
+                            alignItems="center"
+                            justifyContent="center"
+                            sx={{
+                                border: "1px solid #ccc",
+                                backgroundColor: "#f5f5f5",
+                                borderRadius: "20px",
+                                mt: 2,
+                                p: 1,
+                                width: "100px",
+                                gap: 2,
+                            }}
+                        >
+                            <EditIcon />
+                            <DeleteIcon />
+                        </Box>
+                    }
                 </CardContent>
             </Card>
             <PostDetails isOpen={isDetailedViewOpen} onClose={handleCloseDetails} post={currPost}/>

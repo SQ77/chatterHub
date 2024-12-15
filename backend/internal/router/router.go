@@ -29,6 +29,7 @@ func setUpRoutes(r chi.Router) {
 		r.Get("/", handlers.GetPostsHandler)
 		r.Post("/", handlers.CreatePostHandler)
 		r.Post("/upvotes", handlers.UpdatePostUpvotesHandler)
+		r.Delete("/{id}", handlers.DeletePostHandler)
 	})
 
 	r.Post("/api/users", handlers.CreateUserHandler)

@@ -69,6 +69,23 @@ export const updatePostUpvotes = async (postId: number, increment: boolean): Pro
     }
 };
 
+// Delete a post by ID
+export const deletePost = async (postId: number): Promise<void> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        throw error;
+    }
+};
+
 
 // Fetch all users
 export const getUsers = async (): Promise<User[]> => {

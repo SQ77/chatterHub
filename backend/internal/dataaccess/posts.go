@@ -65,3 +65,12 @@ func UpdatePostUpvotes(ctx context.Context, postID int, increment bool) error {
 	}
 	return nil
 }
+
+func DeletePost(ctx context.Context, postID int) error {
+	query := `DELETE FROM posts WHERE id = $1`
+	_, err := database.DB.ExecContext(ctx, query, postID)
+	if err != nil {
+		return fmt.Errorf("failed to delete post with id %d: %w", postID, err)
+	}
+	return nil
+}

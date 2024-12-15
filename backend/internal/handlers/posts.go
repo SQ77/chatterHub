@@ -3,6 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
 
 	"github.com/SQ77/chatterHub/internal/dataaccess"
 	"github.com/SQ77/chatterHub/internal/models"
@@ -63,4 +66,25 @@ func UpdatePostUpvotesHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Post upvotes updated successfully"))
+}
+
+func DeletePostHandler(w http.ResponseWriter, r *http.Request) {
+	// Extract the post ID from the URL
+	postIDStr := chi.URLParam(r, "id")
+	postID, err := strconv.Atoi(postIDStr)
+	if err != nil {
+		http.Error(w, "Invalid post ID", http.StatusBadRequest)
+		return
+	}
+
+	// Delete the post
+	err = dataaccess.DeletePost(r.Context(), postID)
+	if err != nil {
+		http.Error(w, "Failed to delete post: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	response := map[string]string{"message": "Post deleted successfully"}
+	json.NewEncoder(w).Encode(response)
 }

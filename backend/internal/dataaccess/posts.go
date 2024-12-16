@@ -52,6 +52,20 @@ func GetPosts() ([]models.Post, error) {
 	return posts, nil
 }
 
+func GetPostByID(id int) (*models.Post, error) {
+	query := "SELECT id, title, body, category, created, author, upvotes FROM posts WHERE id = $1"
+
+	var post models.Post
+	err := database.DB.QueryRow(query, id).Scan(&post.ID, &post.Title, &post.Body, &post.Category, &post.Created, &post.Author, &post.Upvotes)
+
+	if err != nil {
+		log.Println("Error getting post by ID:", err)
+		return nil, err
+	}
+
+	return &post, nil
+}
+
 func UpdatePostUpvotes(ctx context.Context, postID int, increment bool) error {
 	query := `UPDATE posts SET upvotes = upvotes + $1 WHERE id = $2`
 	delta := 1

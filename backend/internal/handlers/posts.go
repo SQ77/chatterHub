@@ -44,6 +44,31 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(posts)
 }
 
+func GetPostByIDHandler(w http.ResponseWriter, r *http.Request) {
+	// Extract the post ID from the URL
+	idParam := chi.URLParam(r, "id")
+	postID, err := strconv.Atoi(idParam)
+	if err != nil {
+		http.Error(w, "Invalid post ID", http.StatusBadRequest)
+		return
+	}
+
+	// Fetch the post from the database
+	post, err := dataaccess.GetPostByID(postID)
+	if err != nil {
+		http.Error(w, "Failed to retrieve post", http.StatusInternalServerError)
+		return
+	}
+
+	if post == nil {
+		http.Error(w, "Post not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(post)
+}
+
 func UpdatePostUpvotesHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

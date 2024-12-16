@@ -8,6 +8,7 @@ import Login from './components/Login.tsx';
 import SignUp from './components/SignUp.tsx';
 import Profile from './components/Profile.tsx';
 import { AuthProvider } from './components/AuthContext.tsx';
+import EditPost from './components/EditPost.tsx';
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/edit/:postId" element={<EditPost />} />
           </Routes>
         </Container>
       </Router>

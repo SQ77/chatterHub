@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Post, deletePost } from '../api.ts';
 import PostDetails from './PostDetails.tsx';
 import VoteButton from './VoteButton.tsx';
+import { useNavigate } from 'react-router-dom';
 
 interface PostOverviewProps {
     currPost: Post; 
@@ -26,6 +27,8 @@ const categoryIcons = {
 
 const PostOverview: React.FC<PostOverviewProps> = ({ currPost, manageMode }) => {
     const [isDetailedViewOpen, setIsDetailedViewOpen] = useState<boolean>(false);
+
+    const navigate = useNavigate();
 
     const handleCloseDetails = () => {
         setIsDetailedViewOpen(false);
@@ -47,6 +50,10 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost, manageMode }) => 
             console.error("Failed to delete post:", error);
         }
     };
+
+    const handleEditPost = (postId: Number | undefined) => {
+        navigate(`/edit/${postId}`);
+    }
 
     return (
         <>
@@ -98,6 +105,10 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost, manageMode }) => 
                             }}
                         >
                             <EditIcon 
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    handleEditPost(currPost.id);
+                                }}
                                 sx={{
                                     "&:hover": {
                                         color: "blue", 

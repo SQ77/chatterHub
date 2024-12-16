@@ -86,6 +86,15 @@ export const deletePost = async (postId: number): Promise<void> => {
     }
 };
 
+export const updatePost = async (post: Post): Promise<void> => {
+
+}
+
+export const getPostById = async (postId: Number): Promise<Post> => {
+    const response = await fetch(`/api/posts/${postId}`);
+    return await response.json();
+}
+
 
 // Fetch all users
 export const getUsers = async (): Promise<User[]> => {

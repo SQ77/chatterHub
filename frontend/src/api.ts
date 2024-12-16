@@ -88,7 +88,7 @@ export const deletePost = async (postId: number): Promise<void> => {
 
 export const updatePost = async (post: Post): Promise<void> => {
     try {
-        const response = await fetch(`/posts/${post.id}`, {
+        const response = await fetch(`${API_BASE_URL}/posts/${post.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

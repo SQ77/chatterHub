@@ -15,7 +15,7 @@ import React, { useState, useEffect } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { updatePost, getPostById, Post } from '../api.ts';  
 import { useAuth } from './AuthContext.tsx';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EditPost: React.FC = () => {
     const { postId } = useParams<{ postId: string }>();
@@ -36,6 +36,7 @@ const EditPost: React.FC = () => {
     const MAX_BODY_LENGTH = 1000;
 
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -85,7 +86,7 @@ const EditPost: React.FC = () => {
         // Successful submission
         if (!hasError) {
             const postData: Post = {
-                id: Number(postId), // Include the post ID to edit the existing post
+                id: Number(postId), 
                 category,
                 title,
                 body,
@@ -96,6 +97,12 @@ const EditPost: React.FC = () => {
             try {
                 await updatePost(postData);  
                 setSuccessAlertOpen(true);
+                setCategory('');
+                setTitle('');
+                setBody('');
+                setTimeout(() => {
+                    navigate('/profile')
+                }, 3000);
             } catch (error) {
                 setFailureAlertOpen(true);
             }

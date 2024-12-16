@@ -87,9 +87,25 @@ export const deletePost = async (postId: number): Promise<void> => {
 };
 
 export const updatePost = async (post: Post): Promise<void> => {
+    try {
+        const response = await fetch(`/posts/${post.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(post),
+        });
 
-}
+        if (!response.ok) {
+            throw new Error(`Failed to update the post: ${response.statusText}`);
+        }
 
+    } catch (error) {
+        console.error('Error updating the post:', error);
+        throw new Error('Failed to update the post');
+    }
+};
+  
 // Fetch a post by ID
 export const getPostById = async (postId: Number): Promise<Post> => {
     try {

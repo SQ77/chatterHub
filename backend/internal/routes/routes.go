@@ -14,6 +14,8 @@ func NewRouter() *chi.Mux {
 	r.Post("/posts/upvotes", handlers.UpdatePostUpvotesHandler)
 	r.Delete("/posts/{id}", handlers.DeletePostHandler)
 	r.Get("/posts/{id}", handlers.GetPostByIDHandler)
+	r.Put("/posts/{id}", handlers.UpdatePostHandler)
+
 	r.Post("/users", handlers.CreateUserHandler)
 	r.Get("/users", handlers.GetUsersHandler)
 	r.Post("/authenticate", handlers.AuthenticateUserHandler)

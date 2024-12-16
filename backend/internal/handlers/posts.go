@@ -93,6 +93,34 @@ func UpdatePostUpvotesHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Post upvotes updated successfully"))
 }
 
+func UpdatePostHandler(w http.ResponseWriter, r *http.Request) {
+	// Extract the post ID from the URL
+	idParam := chi.URLParam(r, "id")
+	postID, err := strconv.Atoi(idParam)
+	if err != nil {
+		http.Error(w, "Invalid post ID", http.StatusBadRequest)
+		return
+	}
+
+	var updatedPost models.Post
+	if err := json.NewDecoder(r.Body).Decode(&updatedPost); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	updatedPost.ID = postID
+
+	// Update the post in the database
+	err = dataaccess.UpdatePost(updatedPost)
+	if err != nil {
+		http.Error(w, "Failed to update post", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	response := map[string]string{"message": "Post updated successfully"}
+	json.NewEncoder(w).Encode(response)
+}
+
 func DeletePostHandler(w http.ResponseWriter, r *http.Request) {
 	// Extract the post ID from the URL
 	postIDStr := chi.URLParam(r, "id")

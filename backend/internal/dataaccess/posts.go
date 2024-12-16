@@ -80,6 +80,16 @@ func UpdatePostUpvotes(ctx context.Context, postID int, increment bool) error {
 	return nil
 }
 
+func UpdatePost(post models.Post) error {
+	query := `
+		UPDATE posts 
+		SET title = $1, category = $2, body = $3, created = $4, author = $5, upvotes = $6
+		WHERE id = $7
+	`
+	_, err := database.DB.Exec(query, post.Title, post.Category, post.Body, post.Created, post.Author, post.Upvotes, post.ID)
+	return err
+}
+
 func DeletePost(ctx context.Context, postID int) error {
 	query := `DELETE FROM posts WHERE id = $1`
 	_, err := database.DB.ExecContext(ctx, query, postID)

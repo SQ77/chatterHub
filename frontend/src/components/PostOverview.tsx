@@ -17,7 +17,7 @@ interface PostOverviewProps {
     manageMode: boolean;
 }
 
-const categoryIcons = {
+export const categoryIcons = {
     science: <ScienceIcon sx={{ mr: 1 }} />,
     sports: <SportsSoccerIcon sx={{ mr: 1 }} />,
     music: <MusicNoteIcon sx={{ mr: 1 }} />,
@@ -77,7 +77,7 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost, manageMode }) => 
                             {currPost.category.charAt(0).toUpperCase() + currPost.category.slice(1)}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                            {new Date(currPost.created).toLocaleDateString()}
+                            {new Date(currPost.created).toLocaleDateString('en-SG')}
                         </Typography>
                     </Box>
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>

@@ -90,9 +90,16 @@ export const updatePost = async (post: Post): Promise<void> => {
 
 }
 
+// Fetch a post by ID
 export const getPostById = async (postId: Number): Promise<Post> => {
-    const response = await fetch(`/api/posts/${postId}`);
-    return await response.json();
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}`);
+        if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching post by ID:", error);
+        throw error;
+    }
 }
 
 

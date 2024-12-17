@@ -37,4 +37,6 @@ func setUpRoutes(r chi.Router) {
 	r.Post("/api/users", handlers.CreateUserHandler)
 	r.Get("/api/users", handlers.GetUsersHandler)
 	r.Post("/api/authenticate", handlers.AuthenticateUserHandler)
+
+	r.Post("/api/comments", handlers.CreateCommentHandler)
 }

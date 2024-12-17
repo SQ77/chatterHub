@@ -14,9 +14,9 @@ const Login: React.FC = () => {
 
     const handleLogin = async () => {
         try {
-            await authenticateUser(username.trim());
+            const user = await authenticateUser(username.trim());
             setError(''); 
-            login({ username: username.trim() });
+            login({ id: Number(user.id), username: username.trim() });
             navigate("/profile");
         } catch (err) {
             setError('Invalid username. Please try again.');

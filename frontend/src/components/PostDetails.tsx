@@ -11,7 +11,8 @@ import {
     TextField,
     InputAdornment 
 } from '@mui/material';
-import { Post } from '../api.ts';
+import { Post, Comment, createComment } from '../api.ts';
+import { useAuth } from './AuthContext.tsx';
 import { categoryIcons } from './PostOverview.tsx';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -26,6 +27,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
     const [commentToAdd, setCommentToAdd] = useState<string>('');
     const [isAddCommentFocused, setIsAddCommentFocused] = useState<boolean>(false);
 
+    const { isAuthenticated, user } = useAuth();
     const MAX_COMMENT_LENGTH = 200;
 
     useEffect(() => {
@@ -36,6 +38,26 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
             }
         }
     }, [isOpen]);
+
+    const handleAddComment = async (commentString: string) => {
+        if (!user || !post) {
+            console.log("Error creating comment");
+            return;
+        }
+        const commentData: Comment = {
+            post_id: post.id!,
+            user_id: user.id!,
+            content: commentString,
+            created: new Date().toISOString(),
+        };
+        try {
+            await createComment(commentData);
+            setCommentToAdd('');
+            console.log("Created comment successfully");
+        } catch (error) {
+            console.log("Error creating comment");
+        }
+    }
 
     if (!post) return null;
 
@@ -72,7 +94,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                 >
                     {post.body}
 
-                    <Box
+                    {isAuthenticated && <Box
                         sx={{
                             position: 'relative', 
                             display: 'inline-block', 
@@ -129,13 +151,13 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                                 <Button
                                     variant="contained"
                                     size="small"
-                                    onMouseDown={() => console.log(commentToAdd)}
+                                    onMouseDown={() => handleAddComment(commentToAdd)}
                                 >
                                     Comment
                                 </Button>
                             </Box>
                         )}
-                        </Box>
+                        </Box>}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

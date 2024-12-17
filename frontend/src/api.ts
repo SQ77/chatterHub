@@ -10,6 +10,14 @@ export interface Post {
     upvotes: number;
 }
 
+export interface Comment {
+    id?: number;
+    post_id: number;
+    user_id: number;
+    content: string;
+    created: string;
+}
+
 export interface User {
     id?: number;
     username: string
@@ -117,6 +125,27 @@ export const getPostById = async (postId: Number): Promise<Post> => {
         throw error;
     }
 }
+
+
+// Create a new comment
+export const createComment = async (comment: Comment): Promise<Comment> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/comments`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(comment),
+        });
+
+        if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error creating comment:", error);
+        throw error;
+    }
+};
 
 
 // Fetch all users

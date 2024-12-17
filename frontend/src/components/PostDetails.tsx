@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { 
+    Alert,
+    Button, 
+    Box, 
     Dialog, 
     DialogTitle, 
     DialogContent, 
     DialogContentText, 
     DialogActions, 
-    Button, 
-    Box, 
+    InputAdornment,
+    Snackbar, 
     Typography,
     TextField,
-    InputAdornment 
 } from '@mui/material';
 import { Post, Comment, createComment } from '../api.ts';
 import { useAuth } from './AuthContext.tsx';
@@ -27,6 +29,9 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
     const [commentToAdd, setCommentToAdd] = useState<string>('');
     const [isAddCommentFocused, setIsAddCommentFocused] = useState<boolean>(false);
 
+    const [successAlertOpen, setSuccessAlertOpen] = useState<boolean>(false);
+    const [failureAlertOpen, setFailureAlertOpen] = useState<boolean>(false);
+
     const { isAuthenticated, user } = useAuth();
     const MAX_COMMENT_LENGTH = 200;
 
@@ -39,29 +44,30 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
         }
     }, [isOpen]);
 
-    const handleAddComment = async (commentString: string) => {
+    const handleAddComment = async (commentContent: string) => {
         if (!user || !post) {
-            console.log("Error creating comment");
+            setFailureAlertOpen(true);
             return;
         }
         const commentData: Comment = {
             post_id: post.id!,
             user_id: user.id!,
-            content: commentString,
+            content: commentContent,
             created: new Date().toISOString(),
         };
         try {
             await createComment(commentData);
             setCommentToAdd('');
-            console.log("Created comment successfully");
+            setSuccessAlertOpen(true);
         } catch (error) {
-            console.log("Error creating comment");
+            setFailureAlertOpen(true);
         }
     }
 
     if (!post) return null;
 
     return (
+        <>
         <Dialog
             open={isOpen}
             onClose={onClose}
@@ -166,6 +172,40 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                 </Button>
             </DialogActions>
         </Dialog>
+
+        <Snackbar 
+            open={successAlertOpen} 
+            autoHideDuration={5000}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            onClose={() => setSuccessAlertOpen(false)}
+        >
+            <Alert
+                onClose={() => setSuccessAlertOpen(false)}
+                severity="success"
+                variant="filled"
+                sx={{ width: '100%' }}
+            >
+                Comment added successfully!
+            </Alert>
+        </Snackbar>
+
+        <Snackbar 
+            open={failureAlertOpen} 
+            autoHideDuration={5000} 
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            onClose={() => setFailureAlertOpen(false)}
+        >
+            <Alert
+                onClose={() => setFailureAlertOpen(false)}
+                severity="error"
+                variant="filled"
+                
+                sx={{ width: '100%' }}
+            >
+                Error adding comment!
+            </Alert>
+        </Snackbar>
+        </>
     )
 }
 

@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	dataacess "github.com/SQ77/chatterHub/internal/dataaccess"
 	"github.com/SQ77/chatterHub/internal/models"
@@ -55,5 +56,6 @@ func AuthenticateUserHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
 		"message":  "User authenticated successfully",
 		"username": authenticatedUser.Username,
+		"id":       strconv.Itoa(authenticatedUser.ID),
 	})
 }

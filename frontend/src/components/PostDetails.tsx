@@ -130,7 +130,10 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                     tabIndex={-1}
                     sx={{ color: "black" }}
                 >
-                    {post.body}
+                    <Typography variant="subtitle1" gutterBottom>
+                        {post.body}
+                    </Typography>
+                    
 
                     {isAuthenticated && <Box
                         sx={{
@@ -199,6 +202,9 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                         <Typography variant="subtitle1">
                             Comments
                         </Typography>
+                        {!comments || comments.length === 0 
+                            ? <Typography variant="subtitle2">No comments</Typography> 
+                            :
                         <List>
                             {comments?.map((comment) => (
                                 <div key={comment.id}>
@@ -223,7 +229,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                                     </ListItem>
                                 </div>
                             ))}
-                        </List>
+                        </List>}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

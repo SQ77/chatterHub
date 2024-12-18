@@ -18,6 +18,10 @@ export interface Comment {
     created: string;
 }
 
+export interface CommentWithUser extends Comment {
+    username: string;
+}
+
 export interface User {
     id?: number;
     username: string
@@ -143,6 +147,18 @@ export const createComment = async (comment: Comment): Promise<Comment> => {
         return await response.json();
     } catch (error) {
         console.error("Error creating comment:", error);
+        throw error;
+    }
+};
+
+// Fetch all comments for a post
+export const getComments = async (postId: Number): Promise<CommentWithUser[]> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}/comments`);
+        if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching comments:", error);
         throw error;
     }
 };

@@ -3,17 +3,21 @@ import {
     Alert,
     Button, 
     Box, 
+    CircularProgress,
     Dialog, 
     DialogTitle, 
     DialogContent, 
     DialogContentText, 
     DialogActions, 
     InputAdornment,
+    List,
+    ListItem,
+    ListItemText,
     Snackbar, 
     Typography,
     TextField,
 } from '@mui/material';
-import { Post, Comment, createComment } from '../api.ts';
+import { Post, Comment, CommentWithUser, createComment, getComments } from '../api.ts';
 import { useAuth } from './AuthContext.tsx';
 import { categoryIcons } from './PostOverview.tsx';
 import AddIcon from '@mui/icons-material/Add';
@@ -28,6 +32,8 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
     const descriptionElementRef = useRef<HTMLElement>(null);
     const [commentToAdd, setCommentToAdd] = useState<string>('');
     const [isAddCommentFocused, setIsAddCommentFocused] = useState<boolean>(false);
+    const [comments, setComments] = useState<CommentWithUser[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const [successAlertOpen, setSuccessAlertOpen] = useState<boolean>(false);
     const [failureAlertOpen, setFailureAlertOpen] = useState<boolean>(false);
@@ -44,6 +50,22 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
         }
     }, [isOpen]);
 
+    const fetchComments = async () => {
+        if (!post) return;
+        try {
+            const data = await getComments(post.id!);
+            setComments(data);
+        } catch (err) {
+            console.error("Failed to fetch comments.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchComments();
+    }, [post]);
+
     const handleAddComment = async (commentContent: string) => {
         if (!user || !post) {
             setFailureAlertOpen(true);
@@ -59,12 +81,21 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
             await createComment(commentData);
             setCommentToAdd('');
             setSuccessAlertOpen(true);
+            fetchComments();
         } catch (error) {
             setFailureAlertOpen(true);
         }
     }
 
     if (!post) return null;
+
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <>
@@ -88,7 +119,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                         </Typography>
                     </Box>
                 </Box>
-                <Typography variant="h6" mt={1}>
+                <Typography sx={{ fontSize: "25px", mt: 1 }}>
                     {post.title}
                 </Typography>
             </DialogTitle>
@@ -97,6 +128,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                     id="post-details-body"
                     ref={descriptionElementRef}
                     tabIndex={-1}
+                    sx={{ color: "black" }}
                 >
                     {post.body}
 
@@ -164,6 +196,34 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                             </Box>
                         )}
                         </Box>}
+                        <Typography variant="subtitle1">
+                            Comments
+                        </Typography>
+                        <List>
+                            {comments?.map((comment) => (
+                                <div key={comment.id}>
+                                    <ListItem alignItems="flex-start">
+                                        <ListItemText
+                                            primary={
+                                                <Typography variant="subtitle1">
+                                                    {comment.username}
+                                                </Typography>
+                                            }
+                                            secondary={
+                                                <>
+                                                    <Typography variant="body2">
+                                                        {new Date(comment.created).toLocaleDateString('en-SG')}
+                                                    </Typography>
+                                                    <Typography variant="subtitle1" mt={1}>
+                                                        {comment.content}
+                                                    </Typography>
+                                                </>
+                                            }
+                                        />
+                                    </ListItem>
+                                </div>
+                            ))}
+                        </List>
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

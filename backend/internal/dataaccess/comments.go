@@ -50,3 +50,18 @@ func GetCommentsForPost(postID int) ([]models.CommentWithUser, error) {
 
 	return comments, nil
 }
+
+func DeleteComment(commentID int) error {
+	query := "DELETE FROM comments WHERE id = $1"
+	result, err := database.DB.Exec(query, commentID)
+	if err != nil {
+		return fmt.Errorf("failed to delete comment: %w", err)
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		return fmt.Errorf("no comment found with ID %d", commentID)
+	}
+
+	return nil
+}

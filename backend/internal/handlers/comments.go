@@ -58,3 +58,27 @@ func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(comments)
 }
+
+func DeleteCommentHandler(w http.ResponseWriter, r *http.Request) {
+	commentIDStr := chi.URLParam(r, "id")
+	if commentIDStr == "" {
+		http.Error(w, "comment ID is required", http.StatusBadRequest)
+		return
+	}
+
+	commentID, err := strconv.Atoi(commentIDStr)
+	if err != nil {
+		http.Error(w, "invalid comment ID", http.StatusBadRequest)
+		return
+	}
+
+	err = dataaccess.DeleteComment(commentID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	response := map[string]string{"message": "comment deleted successfully"}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}

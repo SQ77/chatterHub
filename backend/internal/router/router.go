@@ -40,4 +40,5 @@ func setUpRoutes(r chi.Router) {
 	r.Post("/api/authenticate", handlers.AuthenticateUserHandler)
 
 	r.Post("/api/comments", handlers.CreateCommentHandler)
+	r.Delete("/api/comments/{id}", handlers.DeleteCommentHandler)
 }

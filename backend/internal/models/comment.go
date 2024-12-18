@@ -9,3 +9,8 @@ type Comment struct {
 	Content string    `json:"content"`
 	Created time.Time `json:"created"`
 }
+
+type CommentWithUser struct {
+	Comment
+	Username string `json:"username"`
+}

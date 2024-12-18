@@ -3,6 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
 
 	"github.com/SQ77/chatterHub/internal/dataaccess"
 	"github.com/SQ77/chatterHub/internal/models"
@@ -35,4 +38,23 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(comment)
+}
+
+func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
+	postID := chi.URLParam(r, "id")
+	postIDInt, err := strconv.Atoi(postID)
+	if err != nil {
+		http.Error(w, "Invalid post ID", http.StatusBadRequest)
+		return
+	}
+
+	// Get the comments from the database
+	comments, err := dataaccess.GetCommentsForPost(postIDInt)
+	if err != nil {
+		http.Error(w, "Failed to retrieve comments", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(comments)
 }

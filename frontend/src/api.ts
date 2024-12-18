@@ -180,6 +180,26 @@ export const deleteComment = async (commentId: number): Promise<void> => {
     }
 };
 
+export const updateComment = async (commentId: number, updatedContent: string): Promise<void> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/comments/${commentId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ content: updatedContent }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update the comment: ${response.statusText}`);
+        }
+
+    } catch (error) {
+        console.error('Error updating the comment:', error);
+        throw new Error('Failed to update the comment');
+    }
+};
+
 
 // Fetch all users
 export const getUsers = async (): Promise<User[]> => {

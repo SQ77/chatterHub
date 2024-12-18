@@ -9,11 +9,8 @@ import {
     DialogContent, 
     DialogContentText, 
     DialogActions, 
-    IconButton,
     InputAdornment,
     List,
-    ListItem,
-    ListItemText,
     Snackbar, 
     Typography,
     TextField,
@@ -22,8 +19,7 @@ import { Post, Comment, CommentWithUser, createComment, getComments, deleteComme
 import { useAuth } from './AuthContext.tsx';
 import { categoryIcons } from './PostOverview.tsx';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import CommentBox from './CommentBox.tsx';
 
 interface PostDetailsProps {
     isOpen: boolean;
@@ -95,7 +91,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
         }
     }
 
-    const handleEditComment = (commentId: number | undefined) => {
+    const handleEditComment = async (commentId: number | undefined) => {
         console.log("edit comment");
     }
 
@@ -239,61 +235,14 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                             ? <Typography variant="subtitle2">No comments</Typography> 
                             : <List>
                                 {comments?.map((comment) => (
-                                    <div key={comment.id}>
-                                        <ListItem alignItems="flex-start">
-                                            <Box
-                                                sx={{
-                                                    display: "flex",
-                                                    justifyContent: "space-between",
-                                                    width: "100%",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <ListItemText
-                                                    primary={
-                                                        <Typography variant="subtitle1">
-                                                            {comment.username}
-                                                        </Typography>
-                                                    }
-                                                    secondary={
-                                                        <>
-                                                            <Typography variant="body2">
-                                                                {new Date(comment.created).toLocaleDateString("en-SG")}
-                                                            </Typography>
-                                                            <Typography variant="subtitle1" mt={1}>
-                                                                {comment.content}
-                                                            </Typography>
-                                                        </>
-                                                    }
-                                                />
-                                                {comment.username === user?.username && <Box>
-                                                    <IconButton 
-                                                        aria-label="edit" 
-                                                        onClick={() => handleEditComment(comment.id)}
-                                                        sx={{
-                                                            mr: 1,
-                                                            "&:hover": {
-                                                                color: "blue", 
-                                                            },
-                                                        }}
-                                                    >
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                    <IconButton 
-                                                        aria-label="delete" 
-                                                        onClick={() => handleDeleteComment(comment.id)}
-                                                        sx={{
-                                                            "&:hover": {
-                                                                color: "#D91C16", 
-                                                            },
-                                                        }}
-                                                    >
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </Box>}
-                                            </Box>
-                                        </ListItem>
-                                    </div>
+                                    <CommentBox 
+                                        setSuccessMessage={setSuccessMessage}
+                                        setSuccessAlertOpen={setSuccessAlertOpen}
+                                        setFailureMessage={setFailureMessage}
+                                        setFailureAlertOpen={setFailureAlertOpen}
+                                        fetchComments={fetchComments}
+                                        comment={comment} 
+                                    />
                                 ))}
                             </List>}
                 </DialogContentText>

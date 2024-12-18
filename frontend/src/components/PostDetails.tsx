@@ -9,6 +9,7 @@ import {
     DialogContent, 
     DialogContentText, 
     DialogActions, 
+    IconButton,
     InputAdornment,
     List,
     ListItem,
@@ -17,10 +18,12 @@ import {
     Typography,
     TextField,
 } from '@mui/material';
-import { Post, Comment, CommentWithUser, createComment, getComments } from '../api.ts';
+import { Post, Comment, CommentWithUser, createComment, getComments, deleteComment } from '../api.ts';
 import { useAuth } from './AuthContext.tsx';
 import { categoryIcons } from './PostOverview.tsx';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface PostDetailsProps {
     isOpen: boolean;
@@ -36,7 +39,9 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
     const [loading, setLoading] = useState<boolean>(true);
 
     const [successAlertOpen, setSuccessAlertOpen] = useState<boolean>(false);
+    const [successMessage, setSuccessMessage] = useState<string>('Successful!');
     const [failureAlertOpen, setFailureAlertOpen] = useState<boolean>(false);
+    const [failureMessage, setFailureMessage] = useState<string>('Error!');
 
     const { isAuthenticated, user } = useAuth();
     const MAX_COMMENT_LENGTH = 200;
@@ -56,7 +61,8 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
             const data = await getComments(post.id!);
             setComments(data);
         } catch (err) {
-            console.error("Failed to fetch comments.");
+            setFailureMessage("Error loading comments!");
+            setFailureAlertOpen(true);
         } finally {
             setLoading(false);
         }
@@ -80,9 +86,36 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
         try {
             await createComment(commentData);
             setCommentToAdd('');
+            setSuccessMessage("Comment added successfully!");
             setSuccessAlertOpen(true);
             fetchComments();
         } catch (error) {
+            setFailureMessage("Error adding comment!");
+            setFailureAlertOpen(true);
+        }
+    }
+
+    const handleEditComment = (commentId: number | undefined) => {
+        console.log("edit comment");
+    }
+
+    const handleDeleteComment = async (commentId: number | undefined) => {
+        const confirm = window.confirm("Delete comment?");
+        if (!confirm) return;
+
+        if (!commentId) {
+            setFailureMessage("Invalid comment ID!");
+            setFailureAlertOpen(true);
+            return;
+        }
+
+        try {
+            await deleteComment(commentId); 
+            setSuccessMessage("Comment deleted successfully!");
+            setSuccessAlertOpen(true);
+            fetchComments();
+        } catch (error) {
+            setFailureMessage("Error deleting comment!");
             setFailureAlertOpen(true);
         }
     }
@@ -204,32 +237,65 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                         </Typography>
                         {!comments || comments.length === 0 
                             ? <Typography variant="subtitle2">No comments</Typography> 
-                            :
-                        <List>
-                            {comments?.map((comment) => (
-                                <div key={comment.id}>
-                                    <ListItem alignItems="flex-start">
-                                        <ListItemText
-                                            primary={
-                                                <Typography variant="subtitle1">
-                                                    {comment.username}
-                                                </Typography>
-                                            }
-                                            secondary={
-                                                <>
-                                                    <Typography variant="body2">
-                                                        {new Date(comment.created).toLocaleDateString('en-SG')}
-                                                    </Typography>
-                                                    <Typography variant="subtitle1" mt={1}>
-                                                        {comment.content}
-                                                    </Typography>
-                                                </>
-                                            }
-                                        />
-                                    </ListItem>
-                                </div>
-                            ))}
-                        </List>}
+                            : <List>
+                                {comments?.map((comment) => (
+                                    <div key={comment.id}>
+                                        <ListItem alignItems="flex-start">
+                                            <Box
+                                                sx={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    width: "100%",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <ListItemText
+                                                    primary={
+                                                        <Typography variant="subtitle1">
+                                                            {comment.username}
+                                                        </Typography>
+                                                    }
+                                                    secondary={
+                                                        <>
+                                                            <Typography variant="body2">
+                                                                {new Date(comment.created).toLocaleDateString("en-SG")}
+                                                            </Typography>
+                                                            <Typography variant="subtitle1" mt={1}>
+                                                                {comment.content}
+                                                            </Typography>
+                                                        </>
+                                                    }
+                                                />
+                                                {comment.username === user?.username && <Box>
+                                                    <IconButton 
+                                                        aria-label="edit" 
+                                                        onClick={() => handleEditComment(comment.id)}
+                                                        sx={{
+                                                            mr: 1,
+                                                            "&:hover": {
+                                                                color: "blue", 
+                                                            },
+                                                        }}
+                                                    >
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                    <IconButton 
+                                                        aria-label="delete" 
+                                                        onClick={() => handleDeleteComment(comment.id)}
+                                                        sx={{
+                                                            "&:hover": {
+                                                                color: "#D91C16", 
+                                                            },
+                                                        }}
+                                                    >
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </Box>}
+                                            </Box>
+                                        </ListItem>
+                                    </div>
+                                ))}
+                            </List>}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -251,7 +317,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                 variant="filled"
                 sx={{ width: '100%' }}
             >
-                Comment added successfully!
+                {successMessage}
             </Alert>
         </Snackbar>
 
@@ -268,7 +334,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                 
                 sx={{ width: '100%' }}
             >
-                Error adding comment!
+                {failureMessage}
             </Alert>
         </Snackbar>
         </>

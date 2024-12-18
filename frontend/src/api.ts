@@ -163,6 +163,23 @@ export const getComments = async (postId: Number): Promise<CommentWithUser[]> =>
     }
 };
 
+// Delete a comment by ID
+export const deleteComment = async (commentId: number): Promise<void> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/comments/${commentId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+
+    } catch (error) {
+        console.error("Error deleting comment:", error);
+        throw error;
+    }
+};
+
 
 // Fetch all users
 export const getUsers = async (): Promise<User[]> => {

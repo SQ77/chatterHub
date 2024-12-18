@@ -23,6 +23,7 @@ func NewRouter() *chi.Mux {
 
 	r.Post("/comments", handlers.CreateCommentHandler)
 	r.Delete("/comments/{id}", handlers.DeleteCommentHandler)
+	r.Put("/comments/{id}", handlers.UpdateCommentHandler)
 
 	return r
 }

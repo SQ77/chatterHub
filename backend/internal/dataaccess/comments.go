@@ -1,6 +1,7 @@
 package dataaccess
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
@@ -49,6 +50,16 @@ func GetCommentsForPost(postID int) ([]models.CommentWithUser, error) {
 	}
 
 	return comments, nil
+}
+
+func UpdateComment(ctx context.Context, commentID int, newContent string) error {
+	query := `
+		UPDATE comments
+		SET content = $1
+		WHERE id = $2
+	`
+	_, err := database.DB.ExecContext(ctx, query, newContent, commentID)
+	return err
 }
 
 func DeleteComment(commentID int) error {

@@ -59,6 +59,39 @@ func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(comments)
 }
 
+func UpdateCommentHandler(w http.ResponseWriter, r *http.Request) {
+	// Extract the comment ID from the URL
+	idParam := chi.URLParam(r, "id")
+	commentID, err := strconv.Atoi(idParam)
+	if err != nil {
+		http.Error(w, "Invalid comment ID", http.StatusBadRequest)
+		return
+	}
+
+	var payload struct {
+		Content string `json:"content"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
+
+	if payload.Content == "" {
+		http.Error(w, "Content cannot be empty", http.StatusBadRequest)
+		return
+	}
+
+	// Update the comment in the database
+	if err := dataaccess.UpdateComment(r.Context(), commentID, payload.Content); err != nil {
+		http.Error(w, "Failed to update comment", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	response := map[string]string{"message": "Comment updated successfully"}
+	json.NewEncoder(w).Encode(response)
+}
+
 func DeleteCommentHandler(w http.ResponseWriter, r *http.Request) {
 	commentIDStr := chi.URLParam(r, "id")
 	if commentIDStr == "" {

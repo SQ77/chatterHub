@@ -73,12 +73,14 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
             setFailureAlertOpen(true);
             return;
         }
+
         const commentData: Comment = {
             post_id: post.id!,
             user_id: user.id!,
             content: commentContent,
             created: new Date().toISOString(),
         };
+
         try {
             await createComment(commentData);
             setCommentToAdd('');
@@ -87,31 +89,6 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
             fetchComments();
         } catch (error) {
             setFailureMessage("Error adding comment!");
-            setFailureAlertOpen(true);
-        }
-    }
-
-    const handleEditComment = async (commentId: number | undefined) => {
-        console.log("edit comment");
-    }
-
-    const handleDeleteComment = async (commentId: number | undefined) => {
-        const confirm = window.confirm("Delete comment?");
-        if (!confirm) return;
-
-        if (!commentId) {
-            setFailureMessage("Invalid comment ID!");
-            setFailureAlertOpen(true);
-            return;
-        }
-
-        try {
-            await deleteComment(commentId); 
-            setSuccessMessage("Comment deleted successfully!");
-            setSuccessAlertOpen(true);
-            fetchComments();
-        } catch (error) {
-            setFailureMessage("Error deleting comment!");
             setFailureAlertOpen(true);
         }
     }
@@ -222,6 +199,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                                     variant="contained"
                                     size="small"
                                     onMouseDown={() => handleAddComment(commentToAdd)}
+                                    disabled={!commentToAdd}
                                 >
                                     Comment
                                 </Button>

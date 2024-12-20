@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CommentWithUser, deleteComment, updateComment } from '../api.ts';
-import { Box, IconButton, ListItem, ListItemText, TextField, Typography } from '@mui/material';
+import { Box, IconButton, ListItem, ListItemText, TextField, Tooltip, Typography } from '@mui/material';
 import { useAuth } from './AuthContext.tsx';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -91,13 +91,28 @@ const CommentBox: React.FC<CommentBoxProps> = ({
                     }}
                 >
                     {isEditing ? (
-                        <TextField
-                            value={updatedContent}
-                            onChange={(e) => setUpdatedContent(e.target.value)}
-                            fullWidth
-                            size="small"
-                            variant="outlined"
-                            sx={{ marginRight: 2 }}
+                        <ListItemText
+                            primary={
+                                <Typography variant="subtitle1">
+                                    {comment.username}
+                                </Typography>
+                            }
+                            secondary={
+                                <>
+                                    <Typography variant="body2">
+                                        {new Date(comment.created).toLocaleDateString("en-SG")}
+                                    </Typography>
+                                    <TextField
+                                        value={updatedContent}
+                                        onChange={(e) => setUpdatedContent(e.target.value)}
+                                        fullWidth
+                                        size="small"
+                                        variant="outlined"
+                                        multiline
+                                        sx={{ mr: 2, mt: 1 }}
+                                    />
+                                </>
+                            }
                         />
                     ) : (
                         <ListItemText
@@ -129,60 +144,128 @@ const CommentBox: React.FC<CommentBoxProps> = ({
                                         alignItems: "center",
                                     }}
                                 >
-                                    <IconButton
-                                        aria-label="save"
-                                        onClick={() => handleSaveComment(comment.id)}
-                                        sx={{
-                                            mr: 1,
-                                            "&:hover": {
-                                                color: "green",
+                                    <Tooltip 
+                                        title="Save"
+                                        placement='top'
+                                        slotProps={{
+                                            popper: {
+                                              modifiers: [
+                                                {
+                                                  name: 'offset',
+                                                  options: {
+                                                    offset: [0, -10],
+                                                  },
+                                                },
+                                              ],
                                             },
                                         }}
                                     >
-                                        <SaveIcon />
-                                    </IconButton>
-
-                                    <IconButton
-                                        aria-label="cancel"
-                                        onClick={() => {
-                                            setIsEditing(false);
-                                            setUpdatedContent(comment.content);
-                                        }}
-                                        sx={{
-                                            "&:hover": {
-                                                color: "#D91C16",
+                                        <IconButton
+                                            aria-label="save"
+                                            onClick={() => handleSaveComment(comment.id)}
+                                            sx={{
+                                                mr: 1,
+                                                "&:hover": {
+                                                    color: "green",
+                                                },
+                                            }}
+                                        >
+                                            <SaveIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    
+                                    <Tooltip 
+                                        title="Cancel"
+                                        placement='top'
+                                        slotProps={{
+                                            popper: {
+                                              modifiers: [
+                                                {
+                                                  name: 'offset',
+                                                  options: {
+                                                    offset: [0, -10],
+                                                  },
+                                                },
+                                              ],
                                             },
                                         }}
                                     >
-                                        <ClearIcon />
-                                    </IconButton>
+                                        <IconButton
+                                            aria-label="cancel"
+                                            onClick={() => {
+                                                setIsEditing(false);
+                                                setUpdatedContent(comment.content);
+                                            }}
+                                            sx={{
+                                                "&:hover": {
+                                                    color: "#D91C16",
+                                                },
+                                            }}
+                                        >
+                                            <ClearIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </Box>
                             ) : (
                                 <>
-                                    <IconButton
-                                        aria-label="edit"
-                                        onClick={handleEditComment}
-                                        sx={{
-                                            mr: 1,
-                                            "&:hover": {
-                                                color: "blue",
+                                    <Tooltip 
+                                        title="Edit"
+                                        placement='top'
+                                        slotProps={{
+                                            popper: {
+                                              modifiers: [
+                                                {
+                                                  name: 'offset',
+                                                  options: {
+                                                    offset: [0, -10],
+                                                  },
+                                                },
+                                              ],
                                             },
                                         }}
                                     >
-                                        <EditIcon />
-                                    </IconButton>
-
-                                    <IconButton
-                                        aria-label="delete"
-                                        onClick={() => handleDeleteComment(comment.id)}
-                                        sx={{
-                                            "&:hover": {
-                                                color: "#D91C16",
+                                        <IconButton
+                                            aria-label="edit"
+                                            onClick={handleEditComment}
+                                            sx={{
+                                                mr: 1,
+                                                "&:hover": {
+                                                    color: "blue",
+                                                },
+                                            }}
+                                        >
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    
+                                    <Tooltip 
+                                        title="Delete"
+                                        placement='top'
+                                        slotProps={{
+                                            popper: {
+                                              modifiers: [
+                                                {
+                                                  name: 'offset',
+                                                  options: {
+                                                    offset: [0, -10],
+                                                  },
+                                                },
+                                              ],
                                             },
                                         }}
                                     >
-                                        <DeleteIcon />
-                                    </IconButton>
+                                        <IconButton
+                                            aria-label="delete"
+                                            onClick={() => handleDeleteComment(comment.id)}
+                                            sx={{
+                                                "&:hover": {
+                                                    color: "#D91C16",
+                                                },
+                                            }}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </>
                             )}
                         </Box>

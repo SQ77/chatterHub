@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
-    const { isAuthenticated, user, logout } = useAuth();
+    const { isAuthenticated, logout } = useAuth();
 
     const toggleDrawer = (open: boolean) => {
         setDrawerOpen(open);
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
                     <MenuIcon />
                 </IconButton>
 
-                <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" sx={{ flexGrow: 1 }} component={Link} to="/">
                     ChatterHub
                 </Typography>
 
@@ -108,21 +108,33 @@ const Navbar: React.FC = () => {
                 <Button 
                     onClick={() => toggleDrawer(false)} 
                     component={Link} to="/" 
-                    sx={{ p: 2 }}
+                    sx={{
+                        p: 1,
+                        m: 2, 
+                        backgroundColor: location.pathname === '/' ? 'blue' : 'transparent', 
+                    }} 
                 >
                     Posts
                 </Button>
                 {isAuthenticated && <Button 
                     onClick={() => toggleDrawer(false)} 
                     component={Link} to="/create" 
-                    sx={{ p: 2 }}
+                    sx={{
+                        p: 1,
+                        m: 2, 
+                        backgroundColor: location.pathname === '/create' ? 'blue' : 'transparent', 
+                    }} 
                 >
                     Create
                 </Button>}
                 {isAuthenticated && <Button 
                     onClick={() => toggleDrawer(false)} 
                     component={Link} to="/profile" 
-                    sx={{ p: 2 }}
+                    sx={{
+                        p: 1,
+                        m: 2, 
+                        backgroundColor: location.pathname === '/profile' ? 'blue' : 'transparent', 
+                    }} 
                 >
                     Profile
                 </Button>}
@@ -142,7 +154,11 @@ const Navbar: React.FC = () => {
                 {!isAuthenticated && <Button 
                     onClick={() => toggleDrawer(false)} 
                     component={Link} to="/login" 
-                    sx={{ p: 2 }}
+                    sx={{
+                        p: 1,
+                        m: 2, 
+                        backgroundColor: location.pathname === '/login' ? 'blue' : 'transparent', 
+                    }} 
                 >
                     Login
                 </Button>}

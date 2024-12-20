@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Tooltip, Typography } from '@mui/material';
 import ScienceIcon from '@mui/icons-material/Science';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
@@ -87,7 +87,9 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost, manageMode }) => 
                     <Typography variant="body1" color="textPrimary">
                         {currPost.body.substring(0, 100)}...
                     </Typography>
+
                     {!manageMode && <VoteButton initialVotes={currPost.upvotes} postId={currPost.id!}/>}
+
                     {manageMode && 
                         <Box 
                             display="flex" 
@@ -104,28 +106,63 @@ const PostOverview: React.FC<PostOverviewProps> = ({ currPost, manageMode }) => 
                                 gap: 2,
                             }}
                         >
-                            <EditIcon 
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    handleEditPost(currPost.id);
-                                }}
-                                sx={{
-                                    "&:hover": {
-                                        color: "blue", 
+                            <Tooltip 
+                                title="Edit"
+                                placement='top'
+                                slotProps={{
+                                    popper: {
+                                        modifiers: [
+                                        {
+                                            name: 'offset',
+                                            options: {
+                                            offset: [0, -10],
+                                            },
+                                        },
+                                        ],
                                     },
                                 }}
-                            />
-                            <DeleteIcon 
-                                onClick={(event) => {
-                                    event.stopPropagation(); 
-                                    handleDeletePost(currPost.id);
-                                }}
-                                sx={{
-                                    "&:hover": {
-                                        color: "#D91C16", 
+                            >
+                                <EditIcon 
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        handleEditPost(currPost.id);
+                                    }}
+                                    sx={{
+                                        "&:hover": {
+                                            color: "blue", 
+                                        },
+                                    }}
+                                />
+                            </Tooltip>
+                            
+                            <Tooltip 
+                                title="Delete"
+                                placement='top'
+                                slotProps={{
+                                    popper: {
+                                        modifiers: [
+                                        {
+                                            name: 'offset',
+                                            options: {
+                                            offset: [0, -10],
+                                            },
+                                        },
+                                        ],
                                     },
                                 }}
-                            />
+                            >
+                                <DeleteIcon 
+                                    onClick={(event) => {
+                                        event.stopPropagation(); 
+                                        handleDeletePost(currPost.id);
+                                    }}
+                                    sx={{
+                                        "&:hover": {
+                                            color: "#D91C16", 
+                                        },
+                                    }}
+                                />
+                            </Tooltip>
                         </Box>
                     }
                 </CardContent>

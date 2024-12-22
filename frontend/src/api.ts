@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://localhost:8000/api"
+export const API_BASE_URL = "https://chatterhub-k00j.onrender.com/api"
 
 export interface Post {
     id?: number;

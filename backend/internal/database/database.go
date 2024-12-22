@@ -28,7 +28,7 @@ func InitDB() error {
 
 	// Construct the connection string
 	dsn := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=require",
 		host, port, user, password, dbname,
 	)
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { 
     Alert,
     Button, 
@@ -51,7 +51,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
         }
     }, [isOpen]);
 
-    const fetchComments = async () => {
+    const fetchComments = useCallback(async () => {
         if (!post) return;
         try {
             const data = await getComments(post.id!);
@@ -62,11 +62,11 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
         } finally {
             setLoading(false);
         }
-    };
-
+    }, [post]); 
+    
     useEffect(() => {
         fetchComments();
-    }, [post]);
+    }, [fetchComments]);  
 
     const handleAddComment = async (commentContent: string) => {
         if (!user || !post) {

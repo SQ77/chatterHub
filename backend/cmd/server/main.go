@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/SQ77/chatterHub/internal/database"
 	"github.com/SQ77/chatterHub/internal/router"
@@ -15,8 +16,12 @@ func main() {
 		log.Fatalf("Database initialization failed: %v", err)
 	}
 
-	r := router.Setup()
-	fmt.Print("Listening on port 8000 at http://localhost:8000!")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
 
-	log.Fatalln(http.ListenAndServe(":8000", r))
+	r := router.Setup()
+	fmt.Printf("Listening on port %s\n", port)
+	log.Fatalln(http.ListenAndServe("0.0.0.0:"+port, r))
 }

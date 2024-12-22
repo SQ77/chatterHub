@@ -15,7 +15,7 @@ import {
     Typography,
     TextField,
 } from '@mui/material';
-import { Post, Comment, CommentWithUser, createComment, getComments, deleteComment } from '../api.ts';
+import { Post, Comment, CommentWithUser, createComment, getComments } from '../api.ts';
 import { useAuth } from './AuthContext.tsx';
 import { categoryIcons } from './PostOverview.tsx';
 import AddIcon from '@mui/icons-material/Add';

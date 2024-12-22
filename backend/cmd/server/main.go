@@ -23,5 +23,5 @@ func main() {
 
 	r := router.Setup()
 	fmt.Printf("Listening on port %s\n", port)
-	log.Fatalln(http.ListenAndServe("0.0.0.0:"+port, r))
+	log.Fatalln(http.ListenAndServe(port, r))
 }

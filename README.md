@@ -50,7 +50,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About ChatterHub
 
-<!-- <img src="src/assets/images/chatterHub_screenshot.png" alt="chatterHub screenshot"> -->
+<img src="frontend/public/chatterHub_screenshot.png" alt="chatterHub screenshot">
 
 <br />
 
@@ -78,7 +78,7 @@ ChatterHub is a dynamic and interactive web forum designed to foster vibrant onl
 <!-- GETTING STARTED -->
 ## Getting Started
 
-1. Go to the [chatterHub website (not deployed yet)]()
+1. Go to the [chatterHub website](https://chatterhubcvwo.netlify.app/)
 2. Create an account by signing up with a username 
 3. Create posts and comment on posts
 
@@ -92,10 +92,15 @@ ChatterHub is a dynamic and interactive web forum designed to foster vibrant onl
 
 ### Profile Page
 
+<img src="frontend/public/chatterHub_profile.png" alt="chatterHub profile" width="600">
+
 ### Create Post
+
+<img src="frontend/public/chatterHub_createpost.png" alt="chatterHub create post" width="600">
 
 ### View Posts
 
+<img src="frontend/public/chatterHub_viewpost.png" alt="chatterHub view post" width="600">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -106,9 +111,11 @@ ChatterHub is a dynamic and interactive web forum designed to foster vibrant onl
 
 - [x] View all posts
 - [x] Filter posts by category
+- [x] Search for posts by title
+- [x] Sign in / Sign out
 - [x] Upvote / downvote posts
 - [x] Create, edit, and delete posts
-- [ ] Create, edit, and delete comments
+- [x] Create, edit, and delete comments
 
 
 See the [open issues](https://github.com/SQ77/chatterHub/issues) for a full list of proposed features (and known issues).

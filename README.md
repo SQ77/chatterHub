@@ -54,7 +54,7 @@
 
 <br />
 
-ChatterHub is a dynamic and interactive web forum designed to foster vibrant online communities. It provides a platform where users can create discussions, share ideas, and engage in meaningful conversations across a variety of topics. Whether you're looking to connect with like-minded individuals, seek advice, or share your expertise, ChatterHub offers a welcoming space for open dialogue and collaboration. 
+ChatterHub is a dynamic and interactive **full stack web forum** designed to foster vibrant online communities. It provides a platform where you can create discussions, share ideas, and engage in meaningful conversations across a variety of topics. Whether you're looking to connect with like-minded individuals, seek advice, or share your expertise, ChatterHub offers a welcoming space for open dialogue and collaboration. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -81,7 +81,9 @@ ChatterHub is a dynamic and interactive web forum designed to foster vibrant onl
 1. Go to the [chatterHub website](https://chatterhubcvwo.netlify.app/)
 2. Create an account by signing up with a username 
 3. Create posts and comment on posts
+<br>
 
+**Note:** ChatterHub is deployed with the free version of Render. It may take **a few minutes to start up completely.**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -92,13 +94,19 @@ ChatterHub is a dynamic and interactive web forum designed to foster vibrant onl
 
 ### Profile Page
 
+Your profile page is your personal hub in the forum, where you can easily manage your activity. Here, you can see all the posts you have made. Each post comes with options for you to edit or delete it, giving you full control over your content. 
+
 <img src="frontend/public/chatterHub_profile.png" alt="chatterHub profile" width="600">
 
 ### Create Post
 
+With the create post feature, you can easily share your thoughts and start conversations in the forum. Simply choose a category that best fits your topic, add an engaging title, and write your post in the body section. Once submitted, your post will be live and ready for others to view, comment on, and engage with.
+
 <img src="frontend/public/chatterHub_createpost.png" alt="chatterHub create post" width="600">
 
 ### View Posts
+
+The view posts feature lets you dive into discussions and share your thoughts with ease. You can add comments to any post, contributing to the conversation and engaging with the community. If you ever need to tweak or remove your own comments, you’re in full control with easy-to-use edit and delete options.
 
 <img src="frontend/public/chatterHub_viewpost.png" alt="chatterHub view post" width="600">
 

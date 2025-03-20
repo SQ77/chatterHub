@@ -83,7 +83,7 @@ ChatterHub is a dynamic and interactive **full stack web forum** designed to fos
 3. Create posts and comment on posts
 <br>
 
-**Note:** ChatterHub is deployed with the free version of Render. It may take **a few minutes to start up completely.**
+**Note: The ChatterHub website is no longer being maintained.**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
